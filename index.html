@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Rentals</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <!-- Header -->
+  <header class="bg-blue-600 text-white py-4">
+    <div class="container mx-auto px-4">
+      <h1 class="text-2xl font-bold">Community Rentals</h1>
+      <nav class="mt-2">
+        <a href="#listings" class="mr-4 hover:underline">Property Listings</a>
+        <a href="#rent-seekers" class="mr-4 hover:underline">Rent Seeker Needs</a>
+        <a href="#submit" class="hover:underline">Submit/Remove</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Property Listings Section -->
+  <section id="listings" class="py-8">
+    <div class="container mx-auto px-4">
+      <h2 class="text-2xl font-semibold mb-4">Available Rentals</h2>
+      <input id="search-listings" oninput="filterItems()" placeholder="Search by location or price" class="p-2 border rounded mb-4 w-full">
+      <div id="listings-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </div>
+  </section>
+
+  <!-- Rent Seeker Needs Section -->
+  <section id="rent-seekers" class="bg-gray-200 py-8">
+    <div class="container mx-auto px-4">
+      <h2 class="text-2xl font-semibold mb-4">Rent Seeker Needs</h2>
+      <input id="search-needs" oninput="filterItems()" placeholder="Search by location or budget" class="p-2 border rounded mb-4 w-full">
+      <div id="rent-seekers-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </div>
+  </section>
+
+  <!-- Submission and Removal Forms Section -->
+  <section id="submit" class="py-8">
+    <div class="container mx-auto px-4">
+      <h2 class="text-2xl font-semibold mb-4">Submit or Remove Listings/Needs</h2>
+      <p class="mb-4">Note: You must sign in with your Google account to submit or remove.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Homeowner Submission Form -->
+        <div>
+          <h3 class="text-xl font-semibold mb-2">To Let</h3>
+          <p class="mb-4">List your property for rent.</p>
+          <!-- Replace with your Homeowner Google Form embed code -->
+          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfxn45G_NDmdV7J-6wR-1a65OXmZ7MswIty94ontM6dbCAXqQ/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
+        <!-- Rent Seeker Submission Form -->
+        <div>
+          <h3 class="text-xl font-semibold mb-2">For Rent Seekers</h3>
+          <p class="mb-4">Share your rental needs.</p>
+          <!-- Replace with your Rent Seeker Google Form embed code -->
+          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfX3-IAMM0q1SbWa4H4HGiES6H3KG2V29-hweATFYT6RvCVtA/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
+        <!-- Removal Request Form -->
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Remove Listing/Need</h3>
+          <p class="mb-4">Remove your listing or need using the Listing ID sent to your email.</p>
+          <!-- Replace with your Removal Google Form embed code -->
+          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd0FXyx7gcgaDP2uz_dTouKrs-otIDDC9MMr8d4AhbHcykNFA/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto px-4 text-center">
+      <p>© 2025 Community Rentals. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript for Dynamic Fetching and Filtering -->
+  <script>
+    const API_KEY = 'AIzaSyCs8-nnhi9DVMQkVqTGTk4MgGEQbpGY-wc';
+    const HOMEOWNER_SHEET_ID = '1ZFQ2dygCn9udHWLP_NzvwR8q5LMe0VrgG_hwzDaA1MY';
+    const RENT_SEEKER_SHEET_ID = '1sHIuVAMX23sTC3X7KCoBuUuiobiiY19PxQi-T-DrUq0';
+    const HOMEOWNER_RANGE = 'Sheet1!A2:I'; // Includes Email, Listing ID, etc.
+    const RENT_SEEKER_RANGE = 'Sheet1!A2:I';
+
+    async function fetchHomeownerListings() {
+      try {
+        const response = await fetch(
+          `https://sheets.googleapis.com/v4/spreadsheets/${HOMEOWNER_SHEET_ID}/values/${HOMEOWNER_RANGE}?key=${API_KEY}`
+        );
+        const data = await response.json();
+        const listingsDiv = document.getElementById('listings-container');
+        listingsDiv.innerHTML = '';
+        if (data.values) {
+          data.values.forEach(([email, id, name, title, location, price, description, contact]) => {
+            listingsDiv.innerHTML += `
+              <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold">${title}</h3>
+                <p class="text-gray-600">Location: ${location}</p>
+                <p class="text-gray-600">Price: $${price}/month</p>
+                <p class="mt-2">${description}</p>
+                <p class="mt-2 font-semibold">Contact: ${contact}</p>
+                <p class="mt-2 text-sm text-gray-500">Listing ID: ${id}</p>
+              </div>
+            `;
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching homeowner listings:', error);
+      }
+    }
+
+    async function fetchRentSeekerNeeds() {
+      try {
+        const response = await fetch(
+          `https://sheets.googleapis.com/v4/spreadsheets/${RENT_SEEKER_SHEET_ID}/values/${RENT_SEEKER_RANGE}?key=${API_KEY}`
+        );
+        const data = await response.json();
+        const needsDiv = document.getElementById('rent-seekers-container');
+        needsDiv.innerHTML = '';
+        if (data.values) {
+          data.values.forEach(([email, id, name, title, location, budget, preferences, contact]) => {
+            needsDiv.innerHTML += `
+              <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold">${title}</h3>
+                <p class="text-gray-600">Desired Location: ${location}</p>
+                <p class="text-gray-600">Budget: $${budget}/month</p>
+                <p class="mt-2">${preferences}</p>
+                <p class="mt-2 font-semibold">Contact: ${contact}</p>
+                <p class="mt-2 text-sm text-gray-500">Listing ID: ${id}</p>
+              </div>
+            `;
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching rent seeker needs:', error);
+      }
+    }
+
+    function filterItems() {
+      const searchListings = document.getElementById('search-listings').value.toLowerCase();
+      const searchNeeds = document.getElementById('search-needs').value.toLowerCase();
+      
+      document.querySelectorAll('#listings-container > div').forEach(div => {
+        div.style.display = div.textContent.toLowerCase().includes(searchListings) ? 'block' : 'none';
+      });
+      
+      document.querySelectorAll('#rent-seekers-container > div').forEach(div => {
+        div.style.display = div.textContent.toLowerCase().includes(searchNeeds) ? 'block' : 'none';
+      });
+    }
+
+    window.onload = () => {
+      fetchHomeownerListings();
+      fetchRentSeekerNeeds();
+    };
+  </script>
+</body>
+</html>
