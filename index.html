@@ -92,7 +92,7 @@
         const listingsDiv = document.getElementById('listings-container');
         listingsDiv.innerHTML = '';
         if (data.values) {
-          data.values.forEach(([email, id, name, title, location, price, description, contact]) => {
+          data.values.forEach(([timestamp, email, name, title, location, price, description, contact, id]) => {
             listingsDiv.innerHTML += `
               <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-xl font-bold">${title}</h3>
@@ -119,7 +119,7 @@
         const needsDiv = document.getElementById('rent-seekers-container');
         needsDiv.innerHTML = '';
         if (data.values) {
-          data.values.forEach(([email, id, name, title, location, budget, preferences, contact]) => {
+          data.values.forEach(([timestamp, email, id, name, title, location, budget, preferences, contact, id]) => {
             needsDiv.innerHTML += `
               <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-xl font-bold">${title}</h3>
