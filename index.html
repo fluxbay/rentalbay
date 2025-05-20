@@ -80,8 +80,8 @@
     const API_KEY = 'AIzaSyCs8-nnhi9DVMQkVqTGTk4MgGEQbpGY-wc';
     const HOMEOWNER_SHEET_ID = '1ZFQ2dygCn9udHWLP_NzvwR8q5LMe0VrgG_hwzDaA1MY';
     const RENT_SEEKER_SHEET_ID = '1sHIuVAMX23sTC3X7KCoBuUuiobiiY19PxQi-T-DrUq0';
-    const HOMEOWNER_RANGE = 'Sheet1!A2:I'; // Includes Email, Listing ID, etc.
-    const RENT_SEEKER_RANGE = 'Sheet1!A2:I';
+    const HOMEOWNER_RANGE = 'Sheet1!C2:I'; // Includes Email, Listing ID, etc.
+    const RENT_SEEKER_RANGE = 'Sheet1!C2:I';
 
     async function fetchHomeownerListings() {
       try {
@@ -92,7 +92,7 @@
         const listingsDiv = document.getElementById('listings-container');
         listingsDiv.innerHTML = '';
         if (data.values) {
-          data.values.forEach(([timestamp, email, name, title, location, price, description, contact, id]) => {
+          data.values.forEach(([name, title, location, price, description, contact, id]) => {
             listingsDiv.innerHTML += `
               <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-xl font-bold">${title}</h3>
@@ -119,7 +119,7 @@
         const needsDiv = document.getElementById('rent-seekers-container');
         needsDiv.innerHTML = '';
         if (data.values) {
-          data.values.forEach(([timestamp, email, id, name, title, location, budget, preferences, contact, id]) => {
+          data.values.forEach(([name, title, location, budget, preferences, contact, id]) => {
             needsDiv.innerHTML += `
               <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-xl font-bold">${title}</h3>
