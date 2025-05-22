@@ -89,22 +89,25 @@
         const data = await response.json();
         const listingsDiv = document.getElementById('listings-container');
         listingsDiv.innerHTML = '';
-        if (data.values) {
-          data.values.forEach(([name, title, location, price, description, contact, id]) => {
+        if (data && data.length > 0) {
+          data.forEach(item => {
             listingsDiv.innerHTML += `
               <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-bold">${title}</h3>
-                <p class="text-gray-600">Location: ${location}</p>
-                <p class="text-gray-600">Price: €${price}/month</p>
-                <p class="mt-2">${description}</p>
-                <p class="mt-2 font-semibold">Contact: ${contact}</p>
-                <p class="mt-2 text-sm text-gray-500">Listing ID: ${id}</p>
+                <h3 class="text-xl font-bold">${item.title}</h3>
+                <p class="text-gray-600">Location: ${item.location}</p>
+                <p class="text-gray-600">Price: $${item.priceOrBudget}/month</p>
+                <p class="mt-2">${item.descriptionOrPreferences}</p>
+                <p class="mt-2 font-semibold">Contact: ${item.contact}</p>
+                <p class="mt-2 text-sm text-gray-500">Listing ID: ${item.listingId}</p>
               </div>
             `;
           });
+        } else {
+          listingsDiv.innerHTML = '<p>No listings available.</p>';
         }
       } catch (error) {
         console.error('Error fetching homeowner listings:', error);
+        document.getElementById('listings-container').innerHTML = '<p>Error loading listings. Please try again later.</p>';
       }
     }
 
@@ -115,22 +118,25 @@
         const data = await response.json();
         const needsDiv = document.getElementById('rent-seekers-container');
         needsDiv.innerHTML = '';
-        if (data.values) {
-          data.values.forEach(([name, title, location, budget, preferences, contact, id]) => {
+        if (data && data.length > 0) {
+          data.forEach(item => {
             needsDiv.innerHTML += `
               <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-bold">${title}</h3>
-                <p class="text-gray-600">Desired Location: ${location}</p>
-                <p class="text-gray-600">Budget: €${budget}/month</p>
-                <p class="mt-2">${preferences}</p>
-                <p class="mt-2 font-semibold">Contact: ${contact}</p>
-                <p class="mt-2 text-sm text-gray-500">Listing ID: ${id}</p>
+                <h3 class="text-xl font-bold">${item.title}</h3>
+                <p class="text-gray-600">Desired Location: ${item.location}</p>
+                <p class="text-gray-600">Budget: $${item.priceOrBudget}/month</p>
+                <p class="mt-2">${item.descriptionOrPreferences}</p>
+                <p class="mt-2 font-semibold">Contact: ${item.contact}</p>
+                <p class="mt-2 text-sm text-gray-500">Listing ID: ${item.listingId}</p>
               </div>
             `;
           });
+        } else {
+          needsDiv.innerHTML = '<p>No needs available.</p>';
         }
       } catch (error) {
         console.error('Error fetching rent seeker needs:', error);
+        document.getElementById('rent-seekers-container').innerHTML = '<p>Error loading needs. Please try again later.</p>';
       }
     }
 
