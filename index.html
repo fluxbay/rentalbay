@@ -80,7 +80,7 @@
 
   <!-- JavaScript for Dynamic Fetching and Filtering -->
   <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyg8xiOQ-IsrVulO1tCKMAhqUkILFDbMXJfEeLyI4mT3g_2yH60L4NZTKLgSJWJBy1vZw/exec';
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwpXFxJ96i3uZUE8Z6FvwL_aX3IctciZ3iMhoXT0AiIiJXk1Q_LJq3bbpriAkGlTcg0eQ/exec';
 
     async function fetchHomeownerListings() {
       try {
@@ -95,7 +95,7 @@
               <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-xl font-bold">${item.title}</h3>
                 <p class="text-gray-600">Location: ${item.location}</p>
-                <p class="text-gray-600">Price: $${item.priceOrBudget}/month</p>
+                <p class="text-gray-600">Price: €${item.priceOrBudget}/month</p>
                 <p class="mt-2">${item.descriptionOrPreferences}</p>
                 <p class="mt-2 font-semibold">Contact: ${item.contact}</p>
                 <p class="mt-2 text-sm text-gray-500">Listing ID: ${item.listingId}</p>
@@ -124,7 +124,7 @@
               <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-xl font-bold">${item.title}</h3>
                 <p class="text-gray-600">Desired Location: ${item.location}</p>
-                <p class="text-gray-600">Budget: $${item.priceOrBudget}/month</p>
+                <p class="text-gray-600">Budget: €${item.priceOrBudget}/month</p>
                 <p class="mt-2">${item.descriptionOrPreferences}</p>
                 <p class="mt-2 font-semibold">Contact: ${item.contact}</p>
                 <p class="mt-2 text-sm text-gray-500">Listing ID: ${item.listingId}</p>
